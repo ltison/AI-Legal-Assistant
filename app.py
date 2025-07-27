@@ -146,7 +146,7 @@ def main():
                                     if hasattr(action, 'tool_input'):
                                         st.markdown(f"📝 **Vstup:** {action.tool_input}")
                                     if hasattr(action, 'log') and action.log:
-                                        st.markdown(f"� **Úvaha:** {action.log}")
+                                        st.markdown(f"🧠 **Úvaha:** {action.log}")
                                     
                                     # Zobraz výsledok - vždy celý, bez ďalšieho expandéra
                                     if observation:
@@ -173,7 +173,11 @@ def main():
             # Získaj odpoveď od agenta
             with st.spinner("Premýšľam..."):
                 try:
-                    result = st.session_state.agent.ask(prompt)
+                    # Type check pre Pylance
+                    if st.session_state.agent is not None:
+                        result = st.session_state.agent.ask(prompt)
+                    else:
+                        raise Exception("Agent nie je inicializovaný")
                     
                     if result["success"]:
                         response = result["answer"]
@@ -277,7 +281,11 @@ def main():
                 # Získaj odpoveď
                 with st.spinner("Premýšľam..."):
                     try:
-                        result = st.session_state.agent.ask(question)
+                        # Type check pre Pylance
+                        if st.session_state.agent is not None:
+                            result = st.session_state.agent.ask(question)
+                        else:
+                            raise Exception("Agent nie je inicializovaný")
                         
                         if result["success"]:
                             response = result["answer"]

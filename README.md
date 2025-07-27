@@ -250,7 +250,7 @@ otázkach vždy kontaktujte kvalifikovaného advokáta.
 **Projekt pre kurz AI Agenti**
 - **Autor:** Lukáš Tisoň
 - **Rok:** 2025  
-- **Inštitúcia:** [Vaša škola]
+- **Inštitúcia:** Robot_Dreams
 - **Kurz:** AI Agenti - Lekce 7
 
 ## 📄 Licencia
