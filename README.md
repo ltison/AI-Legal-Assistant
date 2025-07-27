@@ -48,14 +48,24 @@ pip install -r requirements.txt
 python demo_vector_search.py
 ```
 
-### 4. Nastavenie API kľúčov (voliteľné)
+### 4. Generovanie databáz (prvé spustenie)
+```bash
+# Vygeneruje vector_db/ a legal_terms.db z textových súborov
+python scripts/load_law_texts.py
+python scripts/extract_legal_terms.py
+
+# Overte výsledok
+python test_simple.py
+```
+
+### 5. Nastavenie API kľúčov (voliteľné)
 Vytvorte `.env` súbor:
 ```
 OPENAI_API_KEY=your_openai_api_key
 TAVILY_API_KEY=your_tavily_api_key  
 ```
 
-### 5. Spustenie
+### 6. Spustenie
 ```bash
 # Web aplikácia
 streamlit run app.py
@@ -75,8 +85,9 @@ AI_Kurz_Ulohy/
 │       ├── database_tools.py    # Legal terms DB + Vector DB  
 │       └── legal_tools.py       # (prázdny - nástroje odstránené)
 ├── data/                    # Databázy a dáta
-│   ├── legal_terms.db          # SQLite s právnymi pojmami (6692 definícií)
-│   └── vector_db/              # ChromaDB pre sémantické vyhľadávanie
+│   ├── law_texts/              # Zdrojové texty zákonov (*.txt)
+│   ├── legal_terms.db*         # SQLite s právnymi pojmami (regenerovateľný)
+│   └── vector_db/*             # ChromaDB pre sémantické vyhľadávanie (regenerovateľný)
 ├── app.py                   # Streamlit web aplikácia
 ├── demo_vector_search.py    # Demo nahraných právnych textov
 ├── test_simple.py           # Offline testy funkcionalít

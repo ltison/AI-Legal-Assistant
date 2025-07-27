@@ -1,6 +1,6 @@
 {
   "description": "Metadáta slovenských zákonov pre AI právny asistent",
-  "last_updated": "2025-07-26",
+  "last_updated": "2025-07-27",
   "files": [
     {
       "filename": "ZZ_1964_40_20241101.txt",
@@ -38,6 +38,30 @@
       "description": "Upravuje obchodný register a zmeny a doplnenia niektorých zákonov",
       "valid_from": "01.06.2024",
       "size_lines": 790
+    },
+    {
+      "filename": "ZZ_1992_460_20250101.txt",
+      "law_id": "460/1992",
+      "title": "Ústava Slovenskej republiky",
+      "year": 1992,
+      "number": 460,
+      "type": "ústava",
+      "category": "ústavné právo",
+      "description": "Základný zákon štátu, upravuje štátne zriadenie, základné práva a slobody občanov",
+      "valid_from": "01.01.2025",
+      "size_lines": 919
+    },
+    {
+      "filename": "ZZ_2001_311_20250715.txt",
+      "law_id": "311/2001",
+      "title": "Zákonník práce",
+      "year": 2001,
+      "number": 311,
+      "type": "zákonník",
+      "category": "pracovné právo",
+      "description": "Základný predpis pracovného práva, upravuje pracovnoprávne vzťahy",
+      "valid_from": "15.07.2025",
+      "size_lines": 2310
     },
     {
       "filename": "ZZ_2005_300_20250701.txt",

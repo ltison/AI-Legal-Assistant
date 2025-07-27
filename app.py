@@ -135,7 +135,30 @@ def main():
                     if message["role"] == "assistant" and message.get("intermediate_steps"):
                         with st.expander("🔍 Postup riešenia", expanded=False):
                             for j, step in enumerate(message["intermediate_steps"]):
-                                st.text(f"Krok {j+1}: {step}")
+                                # Formátované zobrazenie kroku
+                                st.markdown(f"**Krok {j+1}:**")
+                                
+                                # Ak je step tuple/list s (action, observation)
+                                if isinstance(step, (tuple, list)) and len(step) >= 2:
+                                    action, observation = step[0], step[1]
+                                    
+                                    # Zobraz akciu a thought ak existuje
+                                    if hasattr(action, 'tool'):
+                                        st.markdown(f"🔧 **Nástroj:** {action.tool}")
+                                    if hasattr(action, 'tool_input'):
+                                        st.markdown(f"📝 **Vstup:** {action.tool_input}")
+                                    if hasattr(action, 'log') and action.log:
+                                        st.markdown(f"� **Úvaha:** {action.log}")
+                                    
+                                    # Zobraz výsledok - vždy celý, bez ďalšieho expandéra
+                                    if observation:
+                                        st.markdown(f"📋 **Výsledok:**")
+                                        st.text(str(observation))
+                                else:
+                                    # Fallback pre iné formáty
+                                    st.text(str(step))
+                                
+                                st.divider()  # Oddeľovač medzi krokmi
                     
                     # Pridaj timestamp pre posledné správy
                     if i >= len(st.session_state.messages) - 2:  # Posledné 2 správy
@@ -199,9 +222,24 @@ def main():
                         
                         # Pridaj intermediate steps do exportu ak existujú
                         if msg.get("intermediate_steps"):
-                            export_lines.append("POSTUP RIEŠENIA:")
+                            export_lines.append("\nPOSTUP RIEŠENIA:")
+                            export_lines.append("=" * 50)
                             for i, step in enumerate(msg["intermediate_steps"]):
-                                export_lines.append(f"  {i+1}. {step}")
+                                export_lines.append(f"\nKrok {i+1}:")
+                                export_lines.append("-" * 20)
+                                
+                                # Formátovaný export krokov
+                                if isinstance(step, (tuple, list)) and len(step) >= 2:
+                                    action, observation = step[0], step[1]
+                                    
+                                    if hasattr(action, 'tool'):
+                                        export_lines.append(f"Nástroj: {action.tool}")
+                                    if hasattr(action, 'tool_input'):
+                                        export_lines.append(f"Vstup: {action.tool_input}")
+                                    if observation:
+                                        export_lines.append(f"Výsledok: {str(observation)[:1000]}...")
+                                else:
+                                    export_lines.append(str(step))
                             export_lines.append("")  # Prázdny riadok
                     
                     export_text = "\n".join(export_lines)
