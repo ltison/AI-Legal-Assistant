@@ -119,7 +119,7 @@ streamlit run app.py
 ### Agent Architecture
 - **Pattern:** ReAct (Reasoning + Acting)
 - **Framework:** LangChain 0.1.x
-- **LLM:** OpenAI GPT (gpt-4o-mini, gpt-4o)
+- **LLM:** OpenAI GPT (gpt-4o-mini)
 - **Memory:** Conversation history buffer
 
 ### Nástroje (Tools)

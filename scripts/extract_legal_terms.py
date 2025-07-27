@@ -175,7 +175,11 @@ Ak nenájdeš žiadne definície, vráť prázdny array [].
             )
             
             # Parsuj odpoveď
-            content = response.choices[0].message.content.strip()
+            content = response.choices[0].message.content
+            if content is None:
+                print("⚠️ OpenAI API vrátilo prázdnu odpoveď")
+                return []
+            content = content.strip()
             
             # Odstráň markdown bloky ak sú
             if content.startswith("```json"):
@@ -204,7 +208,10 @@ Ak nenájdeš žiadne definície, vráť prázdny array [].
             
         except json.JSONDecodeError as e:
             print(f"⚠️ JSON parse error: {e}")
-            print(f"Odpoveď: {content[:200]}...")
+            if content:
+                print(f"Odpoveď: {content[:200]}...")
+            else:
+                print("Odpoveď: None")
             return []
         except Exception as e:
             print(f"❌ Chyba pri volaní OpenAI API: {e}")

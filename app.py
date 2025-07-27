@@ -45,16 +45,9 @@ def main():
     with st.sidebar:
         st.header("⚙️ Nastavenia")
         
-        # Model selection
-        model_options = {
-            "GPT-4o": "gpt-4o-2024-08-06",
-            "GPT-4o-mini": "gpt-4o-mini"
-        }
-        selected_model = st.selectbox(
-            "Vyberte AI model:",
-            options=list(model_options.keys()),
-            index=0
-        )
+        # Používa sa len GPT-4o-mini
+        selected_model_name = "gpt-4o-mini"
+        st.info(f"🤖 **AI Model:** {selected_model_name}")
         
         # API kľúče - len status, nie hodnoty
         st.subheader("🔑 API Kľúče")
@@ -115,7 +108,7 @@ def main():
             with st.spinner("Inicializujem AI asistenta..."):
                 try:
                     st.session_state.agent = create_legal_assistant(
-                        model=model_options[selected_model]
+                        model=selected_model_name
                     )
                     st.success("✅ AI asistent je pripravený!")
                 except Exception as e:
