@@ -41,9 +41,8 @@ class LegalAssistantAgent:
         
         # Inicializuj LLM  
         self.llm = ChatOpenAI(
-            model_name=model,
-            temperature=temperature,
-            max_tokens=4000
+            model=model,
+            temperature=temperature
         )
         
         # Načítaj nástroje
