@@ -56,27 +56,25 @@ def main():
             index=0
         )
         
-        # API kľúče
+        # API kľúče - len status, nie hodnoty
         st.subheader("🔑 API Kľúče")
-        openai_key = st.text_input(
-            "OpenAI API kľúč:",
-            type="password",
-            value=os.getenv("OPENAI_API_KEY", ""),
-            help="Potrebný pre fungovanie AI asistenta"
-        )
         
-        tavily_key = st.text_input(
-            "Tavily API kľúč:",
-            type="password", 
-            value=os.getenv("TAVILY_API_KEY", ""),
-            help="Voliteľný - pre webové vyhľadávanie"
-        )
+        # Načítaj API kľúče z environment (z .env súboru)
+        openai_key = os.getenv("OPENAI_API_KEY", "")
+        tavily_key = os.getenv("TAVILY_API_KEY", "")
         
-        # Nastavenie environment variables
+        # Zobrazenie stavu API kľúčov (bez hodnôt)
         if openai_key:
-            os.environ["OPENAI_API_KEY"] = openai_key
+            st.success("✅ OpenAI API kľúč: Nastavený")
+        else:
+            st.error("❌ OpenAI API kľúč: Chýba v .env súbore")
+            
         if tavily_key:
-            os.environ["TAVILY_API_KEY"] = tavily_key
+            st.success("✅ Tavily API kľúč: Nastavený")
+        else:
+            st.warning("⚠️ Tavily API kľúč: Chýba v .env súbore (voliteľný)")
+        
+        st.info("💡 **Tip:** API kľúče nastavte v súbore `.env` v root priečinku projektu")
         
         # Informácie o nástrojoch
         st.subheader("🔧 Dostupné nástroje")
@@ -322,7 +320,7 @@ def main():
         🎯 **Účel:**
         Školský projekt pre kurz AI Agenti
         
-        👨‍💻 **Autor:** [Lukáš Tisoň]
+        👨‍💻 **Autor:** Lukáš Tisoň
         📅 **Rok:** 2025
         """)
         

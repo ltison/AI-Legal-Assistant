@@ -40,7 +40,7 @@ class EnhancedVectorSearchTool(BaseTool):
     4. Kombinované: "law:513/1991 contains:konateľ"
     5. Negácia: "not_contains:fyzická osoba"
     
-    Databáza obsahuje zákony: 40/1964, 513/1991, 530/2003, 300/2005, 160/2015, 161/2015, 460/1992, 311/2001
+    Databáza obsahuje zákony: 40/1964, 513/1991, 530/2003, 300/2005, 160/2015, 161/2015
     
     Vstup: optimalizovaný dotaz pre právny text (nie otázka používateľa)
     """
@@ -122,12 +122,16 @@ class EnhancedVectorSearchTool(BaseTool):
                 return
             
             self.collection = self.client.get_collection(name=self.collection_name)
-            count = self.collection.count()
             
-            if count > 0:
-                print(f"✅ Enhanced search pripravený s {count} dokumentmi")
+            if self.collection is not None:
+                count = self.collection.count()
+                
+                if count > 0:
+                    print(f"✅ Enhanced search pripravený s {count} dokumentmi")
+                else:
+                    print("⚠️ Collection je prázdna")
             else:
-                print("⚠️ Collection je prázdna")
+                print("❌ Nepodarilo sa načítať collection")
                 
         except Exception as e:
             print(f"❌ Chyba pri načítavaní collection: {e}")
@@ -195,6 +199,10 @@ class EnhancedVectorSearchTool(BaseTool):
     def _fulltext_search(self, where_filters: Dict, where_document: Dict, limit: int = 5) -> List[Dict]:
         """Vykonaj fulltext search"""
         try:
+            # Skontroluj či je collection dostupná
+            if not self.collection:
+                return []
+                
             # Základný fulltext search
             kwargs = {'limit': limit, 'include': ['documents', 'metadatas']}
             
@@ -229,10 +237,10 @@ class EnhancedVectorSearchTool(BaseTool):
             print(f"Chyba pri fulltext search: {e}")
             return []
     
-    def _semantic_search(self, query: str, where_filters: Dict = None, limit: int = 8) -> List[Dict]:
+    def _semantic_search(self, query: str, where_filters: Optional[Dict] = None, limit: int = 8) -> List[Dict]:
         """Vykonaj sémantické vyhľadávanie"""
         try:
-            if not self.embedding_function:
+            if not self.embedding_function or not self.collection:
                 return []
             
             # Vytvor embedding pre query

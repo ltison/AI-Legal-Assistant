@@ -54,9 +54,8 @@
 - **Základné embedding** - Štandardný model
 
 ### 🧪 Testing
-- `test_simple.py` - Základné offline testy
-- `demo_simple.py` - Interaktívne demo
-- Fallback riešenia pre chýbajúce API kľúče
+- Testovanie cez Streamlit web aplikáciu
+- Enhanced Vector Search s fulltext možnosťami
 
 ---
 

@@ -43,35 +43,27 @@ venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 ```
 
-### 3. Test nahraných dát
-```bash
-python demo_vector_search.py
-```
-
-### 4. Generovanie databáz (prvé spustenie)
+### 3. Generovanie databáz (prvé spustenie)
 ```bash
 # Vygeneruje vector_db/ a legal_terms.db z textových súborov
 python scripts/load_law_texts.py
 python scripts/extract_legal_terms.py
-
-# Overte výsledok
-python test_simple.py
 ```
 
-### 5. Nastavenie API kľúčov (voliteľné)
+### 4. Nastavenie API kľúčov (voliteľné)
 Vytvorte `.env` súbor:
 ```
 OPENAI_API_KEY=your_openai_api_key
 TAVILY_API_KEY=your_tavily_api_key  
 ```
 
-### 6. Spustenie
+### 5. Spustenie
 ```bash
 # Web aplikácia
 streamlit run app.py
 
-# Demo v terminále  
-python demo.py
+# Alebo použite helper script
+./run.sh
 ```
 
 ## 📁 Štruktúra projektu
@@ -89,8 +81,7 @@ AI_Kurz_Ulohy/
 │   ├── legal_terms.db*         # SQLite s právnymi pojmami (regenerovateľný)
 │   └── vector_db/*             # ChromaDB pre sémantické vyhľadávanie (regenerovateľný)
 ├── app.py                   # Streamlit web aplikácia
-├── demo_vector_search.py    # Demo nahraných právnych textov
-├── test_simple.py           # Offline testy funkcionalít
+├── run.sh                   # Helper script pre spustenie
 ├── scripts/
 │   ├── load_law_texts.py    # Načítanie textov do ChromaDB
 │   └── extract_legal_terms.py # AI extrahovanie pojmov do SQL
@@ -119,8 +110,8 @@ Príklad: ZZ_1964_40_20241101.txt = Zákon 40/1964 z 1.11.2024
 
 ### Test vyhľadávania
 ```bash
-python demo_vector_search.py  # Základný test
-python test_offline.py        # Test Enhanced Vector Search
+# Otestujte databázu príkazmi v aplikácii
+streamlit run app.py
 ```
 
 ## �🛠️ Technické detaily
@@ -191,17 +182,13 @@ Action Input: law:513/1991 contains:súd
 
 ## 🧪 Testovanie
 
-### Offline test (bez API kľúčov):
+### Test cez web aplikáciu:
 ```bash
-python test_offline.py
+streamlit run app.py
+# alebo
+./run.sh
 ```
-Testuje: Enhanced Vector Search, databázu, fulltext možnosti, kontextové chunky
-
-### Plný test (s API kľúčmi):
-```bash
-python demo.py
-```
-Testuje: celý ReAct workflow, všetky nástroje, OpenAI integráciu
+Otestuje: Enhanced Vector Search, databázu, fulltext možnosti, kontextové chunky cez webové rozhranie
 
 ## ⚠️ Obmedzenia a upozornenia
 
@@ -261,7 +248,7 @@ otázkach vždy kontaktujte kvalifikovaného advokáta.
 ## 👨‍💻 Autor
 
 **Projekt pre kurz AI Agenti**
-- **Autor:** [Lukáš Tisoň]
+- **Autor:** Lukáš Tisoň
 - **Rok:** 2025  
 - **Inštitúcia:** [Vaša škola]
 - **Kurz:** AI Agenti - Lekce 7

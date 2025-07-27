@@ -67,7 +67,6 @@ V rámci optimalizácie projektu sme úspešne implementovali **Enhanced Vector 
 ### Aktualizované súbory:
 - `README.md` - Reflektuje všetky nové funkcie
 - `project_summary.py` - Aktuálny stav projektu
-- `test_offline.py` - Testy Enhanced Vector Search
 
 ## 🔧 Migration guide
 
