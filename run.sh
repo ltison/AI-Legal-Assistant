@@ -25,14 +25,14 @@ if [ ! -f ".env" ]; then
 fi
 
 # Aktivuj venv a spusť aplikáciu
-echo "🔧 Aktivujem virtuálne prostredie..."
-source venv/bin/activate
+echo "🔧 Používam virtuálne prostredie..."
+VENV_PYTHON="./venv/bin/python"
 
 echo "📦 Kontrolujem závislosti..."
-pip list | grep streamlit > /dev/null
+$VENV_PYTHON -c "import streamlit" 2>/dev/null
 if [ $? -ne 0 ]; then
-    echo "❌ Streamlit nie je nainštalovaný!"
-    echo "💡 Nainštalujte závislosti: pip install -r requirements.txt"
+    echo "❌ Streamlit nie je nainštalovaný vo venv!"
+    echo "💡 Nainštalujte závislosti: ./venv/bin/pip install -r requirements.txt"
     exit 1
 fi
 
@@ -41,4 +41,4 @@ echo "📱 Aplikácia bude dostupná na: http://localhost:8501"
 echo "🛑 Pre zastavenie stlačte Ctrl+C"
 echo ""
 
-streamlit run app.py
+$VENV_PYTHON -m streamlit run app.py

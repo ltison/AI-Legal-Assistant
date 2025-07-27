@@ -20,7 +20,6 @@ from agent.tools.enhanced_vector_search import get_enhanced_search_tool
 
 load_dotenv()
 
-
 class LegalAssistantAgent:
     """AI Agent pre právne poradenstvo s ReAct pattern"""
     
