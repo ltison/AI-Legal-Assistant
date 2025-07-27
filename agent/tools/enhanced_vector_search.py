@@ -22,16 +22,27 @@ class EnhancedVectorSearchTool(BaseTool):
     description: str = """
     Pokročilý vyhľadávací nástroj kombinujúci sémantické vyhľadávanie a fulltext search v databáze slovenských zákonov.
     
+    DÔLEŽITÉ POKYNY PRE AGENTA:
+    - Databáza obsahuje skutočné znenia zákonov (nie odpovede na otázky)
+    - Pre sémantické vyhľadávanie transformuj otázky na kľúčové pojmy a tvrdenia:
+      • "Ako založiť s.r.o.?" → "založenie spoločnosti s ručením obmedzeným postup registrácia"
+      • "Čo je vlastníctvo?" → "vlastníctvo právo vlastník vec držať užívať nakladať"
+      • "Povinnosti konateľa?" → "konateľ povinnosti zastupovanie rozhodovanie s.r.o."
+    - Používaj právnu terminológiu a synonymá:
+      • s.r.o., spoločnosť s ručením obmedzeným, kapitálová spoločnosť
+      • vlastníctvo, vlastnícke právo, vlastník
+      • nájom, prenájom, nájomná zmluva
+    
     Podporované formáty dotazov:
-    1. Sémantické vyhľadávanie: "povinnosti konateľa"
-    2. Fulltext search: "contains:spoločnosť"
-    3. Regex vyhľadávanie: "regex:§\\s*135[a-z]*"
-    4. Kombinované: "law:513/1991 contains:súd" (hľadá text "súd" len v zákone 513/1991)
+    1. Sémantické: "povinnosti konateľa zastupovanie spoločnosť"
+    2. Fulltext: "contains:§ 135" 
+    3. Regex: "regex:§\\s*135[a-z]*"
+    4. Kombinované: "law:513/1991 contains:konateľ"
     5. Negácia: "not_contains:fyzická osoba"
     
-    Databáza obsahuje: 40/1964, 513/1991, 530/2003, 300/2005, 160/2015, 161/2015
+    Databáza obsahuje zákony: 40/1964, 513/1991, 530/2003, 300/2005, 160/2015, 161/2015, 460/1992, 311/2001
     
-    Input: vyhľadávací dotaz s voliteľnými prefixmi (string)
+    Vstup: optimalizovaný dotaz pre právny text (nie otázka používateľa)
     """
     
     # Pydantic fields
@@ -218,7 +229,7 @@ class EnhancedVectorSearchTool(BaseTool):
             print(f"Chyba pri fulltext search: {e}")
             return []
     
-    def _semantic_search(self, query: str, where_filters: Dict = None, limit: int = 5) -> List[Dict]:
+    def _semantic_search(self, query: str, where_filters: Dict = None, limit: int = 8) -> List[Dict]:
         """Vykonaj sémantické vyhľadávanie"""
         try:
             if not self.embedding_function:

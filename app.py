@@ -84,7 +84,7 @@ def main():
         - 🔍 **Tavily Search**: Webové vyhľadávanie
         - 📚 **Wikipedia**: Právne pojmy
         - 💾 **SQL Databáza**: Slovník právnych pojmov
-        - 🤖 **Vector Search**: Sémantické vyhľadávanie
+        - 🤖 **ChromaDB**: vyhľadávanie v predpisoch
         """)
     
     # Hlavná oblasť
@@ -316,7 +316,7 @@ def main():
         - LangChain ReAct Agent
         - OpenAI GPT modely
         - Streamlit UI
-        - ChromaDB Vector DB
+        - ChromaDB Vector + Fulltext
         - SQLite databáza
         
         🎯 **Účel:**
