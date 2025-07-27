@@ -1,0 +1,85 @@
+# VS Code nastavenia
+.vscode/
+.github/
+
+# Python virtual environment
+venv/
+env/
+.env
+
+# Python cache súbory
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE súbory
+.idea/
+*.swp
+*.swo
+*~
+
+# OS súbory
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Projekt špecifické - databázy (regenerovateľné)
+data/vector_db/
+data/chroma_db/
+data/*.db
+logs/
+*.log
+
+# Ponechať zdrojové súbory
+!data/law_texts/
+!data/law_texts/*.txt
+!data/law_texts/*.json
+
+# API kľúče a citlivé dáta
+.env
+*.key
+secrets.json

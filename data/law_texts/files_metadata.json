@@ -1,0 +1,81 @@
+{
+  "description": "Metadáta slovenských zákonov pre AI právny asistent",
+  "last_updated": "2025-07-26",
+  "files": [
+    {
+      "filename": "ZZ_1964_40_20241101.txt",
+      "law_id": "40/1964",
+      "title": "Občiansky zákonník",
+      "year": 1964,
+      "number": 40,
+      "type": "zákonník",
+      "category": "civilné právo",
+      "description": "Základný predpis civilného práva, upravuje majetkové vzťahy fyzických a právnických osôb",
+      "valid_from": "01.11.2024",
+      "size_lines": 2722
+    },
+    {
+      "filename": "ZZ_1991_513_20240601.txt",
+      "law_id": "513/1991",
+      "title": "Obchodný zákonník",
+      "year": 1991,
+      "number": 513,
+      "type": "zákonník",
+      "category": "obchodné právo",
+      "description": "Predpis obchodného práva, upravuje podnikateľskú činnosť a obchodné vzťahy",
+      "valid_from": "01.06.2024",
+      "valid_to": "30.09.2025",
+      "size_lines": 4457
+    },
+    {
+      "filename": "ZZ_2003_530_20240601.txt",
+      "law_id": "530/2003",
+      "title": "Zákon o obchodnom registri",
+      "year": 2003,
+      "number": 530,
+      "type": "zákon",
+      "category": "obchodné právo",
+      "description": "Upravuje obchodný register a zmeny a doplnenia niektorých zákonov",
+      "valid_from": "01.06.2024",
+      "size_lines": 790
+    },
+    {
+      "filename": "ZZ_2005_300_20250701.txt",
+      "law_id": "300/2005",
+      "title": "Trestný zákon",
+      "year": 2005,
+      "number": 300,
+      "type": "zákon",
+      "category": "trestné právo",
+      "description": "Základný predpis trestného práva, definuje trestné činy a tresty",
+      "valid_from": "01.07.2025",
+      "valid_to": "31.07.2025",
+      "size_lines": 4656
+    },
+    {
+      "filename": "ZZ_2015_160_20240701.txt",
+      "law_id": "160/2015",
+      "title": "Civilný sporový poriadok",
+      "year": 2015,
+      "number": 160,
+      "type": "zákon",
+      "category": "procesné právo",
+      "description": "Upravuje konanie pred súdmi v civilných veciach",
+      "valid_from": "01.07.2024",
+      "size_lines": 1982
+    },
+    {
+      "filename": "ZZ_2015_161_20241201.txt",
+      "law_id": "161/2015",
+      "title": "Civilný mimosporový poriadok",
+      "year": 2015,
+      "number": 161,
+      "type": "zákon",
+      "category": "procesné právo",
+      "description": "Upravuje mimosporové konanie pred súdmi v civilných veciach",
+      "valid_from": "01.12.2024",
+      "valid_to": "30.09.2025",
+      "size_lines": 1602
+    }
+  ]
+}
