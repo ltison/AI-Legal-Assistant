@@ -24,9 +24,16 @@ class LegalTermSearchTool(BaseTool):
     name: str = "legal_term_search"
     description: str = """
     Vyhľadáva definície právnych pojmov v databáze slovenských zákonov.
-    Užitočné keď používateľ pýta na význam právnych termínov alebo chce vysvetlenie pojmov.
-    Podporuje fuzzy vyhľadávanie a synonymá.
-    Input: kľúčové slová alebo pojmy na vyhľadanie (string)
+    
+    DÔLEŽITÉ POKYNY PRE POUŽITIE:
+    - Analyzuj používateľskú otázku a identifikuj v nej konkrétne právne pojmy alebo termíny
+    - Extrahuj kľúčové právne pojmy ako: "vlastníctvo", "dedenie", "s.r.o.", "kúpna zmluva", "nájom", atď.
+    - Pre komplexné otázky môžeš poslať viacero pojmov naraz oddelených čiarkami
+    - Nepoužívaj celé vety, ale konkrétne termíny (napr. namiesto "ako založiť s.r.o." použij "s.r.o., založenie")
+    - Kombinuj základné aj odborné názvy (napr. "spoločnosť s ručením obmedzeným, s.r.o.")
+    
+    Vstup: jeden alebo viacero pojmov oddelených čiarkami (napr. "vlastníctvo, dedenie" alebo "s.r.o.")
+    Výstup: definície, zdroje zákonov a relevantné informácie pre každý pojem
     """
     
     # Pydantic fields
@@ -35,76 +42,71 @@ class LegalTermSearchTool(BaseTool):
     def __init__(self, db_path: str = "data/legal_terms.db", **kwargs):
         super().__init__(db_path=db_path, **kwargs)
     
-    def extract_keywords(self, query: str) -> List[str]:
-        """Extrahuje kľúčové slová z používateľského dotazu"""
-        # Odstráň bežné slová
-        stop_words = {
-            'čo', 'je', 'to', 'ako', 'kde', 'kedy', 'prečo', 'aký', 'aká', 'aké',
-            'ktorý', 'ktorá', 'ktoré', 'môže', 'môžem', 'sa', 'si', 'ma', 'mi',
-            'na', 'do', 'od', 'za', 'pre', 'pod', 'nad', 'o', 'v', 'vo', 'k', 'ku',
-            'a', 'ale', 'alebo', 'ani', 'však', 'že', 'aby', 'keď', 'ak', 'či',
-            'znamená', 'definícia', 'pojem', 'termín', 'vysvetli', 'objasni'
-        }
-        
-        # Tokenizuj a vyčisti
-        words = re.findall(r'\b\w+\b', query.lower())
-        keywords = [word for word in words if word not in stop_words and len(word) > 2]
-        
-        # Pridaj aj pôvodné frázy s viacerými slovami
-        phrases = []
-        if 's ručením obmedzeným' in query.lower():
-            phrases.append('spoločnosť s ručením obmedzeným')
-        if 'právnická osoba' in query.lower():
-            phrases.append('právnická osoba')
-        if 'fyzická osoba' in query.lower():
-            phrases.append('fyzická osoba')
-        
-        return keywords + phrases
-    
     def _run(self, query: str) -> str:
         """Vyhľadaj právne pojmy"""
         try:
-            # Extrahuj kľúčové slová
-            keywords = self.extract_keywords(query)
+            # Agent môže poslať viacero pojmov oddelených čiarkami alebo slovami "a", "aj"
+            search_terms = []
             
-            if not keywords:
-                return "Neboli nájdené relevantné kľúčové slová v dotaze."
+            # Rozdeľ na čiarky alebo spojky
+            if ',' in query:
+                search_terms = [term.strip() for term in query.split(',') if term.strip()]
+            elif ' a ' in query or ' aj ' in query:
+                # Nahraď spojky čiarkami a rozdeľ
+                temp_query = query.replace(' a ', ', ').replace(' aj ', ', ')
+                search_terms = [term.strip() for term in temp_query.split(',') if term.strip()]
+            else:
+                # Jeden pojem
+                search_terms = [query.strip()]
+            
+            if not search_terms or not any(search_terms):
+                return "Nebol zadaný žiadny pojem na vyhľadanie."
             
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
             
-            # Vyhľadávanie s fuzzy matching
-            results = []
-            for keyword in keywords[:3]:  # Max 3 kľúčové slová
+            all_results = []
+            
+            # Vyhľadávaj každý pojem samostatne
+            for search_term in search_terms[:5]:  # Max 5 pojmov
+                if not search_term:
+                    continue
+                    
                 cursor.execute("""
                     SELECT term, definition, law_id, paragraph, confidence, category
                     FROM legal_terms 
                     WHERE term LIKE ? OR definition LIKE ?
                     ORDER BY confidence DESC, LENGTH(term) ASC
                     LIMIT 3
-                """, (f"%{keyword}%", f"%{keyword}%"))
+                """, (f"%{search_term}%", f"%{search_term}%"))
                 
-                keyword_results = cursor.fetchall()
-                for result in keyword_results:
-                    if result not in results:  # Vyvaruj sa duplicitám
-                        results.append(result)
+                results = cursor.fetchall()
+                
+                if results:
+                    all_results.append((search_term, results))
             
             conn.close()
             
-            if not results:
-                return f"Nenašli sa definície pre: {', '.join(keywords)}"
+            if not all_results:
+                return f"Nenašli sa definície pre pojmy: {', '.join(search_terms)}"
             
-            # Formátuj výsledky
-            response = f"🔍 Nájdené definície pre: {', '.join(keywords)}\n\n"
+            # Formátuj výsledky pre každý pojem
+            response = ""
             
-            for i, (term, definition, law_id, paragraph, confidence, category) in enumerate(results[:5], 1):
-                response += f"{i}. **{term}** ({category})\n"
-                response += f"   📍 {law_id}"
-                if paragraph:
-                    response += f" {paragraph}"
-                response += f"\n"
-                response += f"   📝 {definition}\n"
-                response += f"   🎯 Spoľahlivosť: {confidence:.1f}/1.0\n\n"
+            for search_term, results in all_results:
+                if response:  # Pridaj oddeľovač ak nie je prvý pojem
+                    response += "\n" + "="*50 + "\n\n"
+                    
+                response += f"🔍 Definície pre pojem: **{search_term}**\n\n"
+                
+                for i, (term, definition, law_id, paragraph, confidence, category) in enumerate(results, 1):
+                    response += f"{i}. **{term}** ({category})\n"
+                    response += f"   📍 {law_id}"
+                    if paragraph:
+                        response += f" {paragraph}"
+                    response += f"\n"
+                    response += f"   📝 {definition}\n"
+                    response += f"   🎯 Spoľahlivosť: {confidence:.1f}/1.0\n\n"
             
             return response.strip()
             
