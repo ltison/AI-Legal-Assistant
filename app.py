@@ -1,7 +1,16 @@
 """
 Streamlit web aplikácia pre AI Právneho Asistenta
 """
+# Streamlit ChromaDB kompatibilita - override SQLite len ak je pysqlite3 dostupný
+try:
+    __import__('pysqlite3')
+    import sys
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+except ImportError:
+    # pysqlite3 nie je dostupný, použije sa štandardný sqlite3
+    pass
 
+import sqlite3
 import streamlit as st
 import os
 from dotenv import load_dotenv
