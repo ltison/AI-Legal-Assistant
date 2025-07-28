@@ -68,16 +68,16 @@ ehthumbs.db
 Thumbs.db
 
 # Projekt špecifické - databázy (regenerovateľné)
-data/vector_db/
-data/chroma_db/
-data/*.db
+#data/vector_db/
+#data/chroma_db/
+#data/*.db
 logs/
 *.log
 
 # Ponechať zdrojové súbory
-!data/law_texts/
-!data/law_texts/*.txt
-!data/law_texts/*.json
+#!data/law_texts/
+#!data/law_texts/*.txt
+#!data/law_texts/*.json
 
 # API kľúče a citlivé dáta
 .env

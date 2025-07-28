@@ -8,4 +8,4 @@ python-dotenv>=1.0.0
 streamlit>=1.29.0
 sentence-transformers>=2.2.0
 # Pre Streamlit Cloud deployment odkomentujte nasledujúci riadok:
-# pysqlite3-binary
+pysqlite3-binary
